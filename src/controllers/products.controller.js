@@ -14,13 +14,11 @@ const routerProductsById = async (req, res) => {
   try {
     const { id } = req.params;
     const [[products]] = await querys.getProductsById(id);
-    console.log(products);
     if (!products) {
       return res.status(404).json({ message: 'Product not found' });
     }
     return res.status(200).json(products);
   } catch (error) {
-    console.log(error);
     return res.status(400).json({ message: 'deu ruim' });
   }
 };
@@ -33,7 +31,11 @@ const routerPostProducts = async (req, res) => {
     id: newId,
     name: item.name,
   };
-  await querys.insertProducts(newObj);
+  const insertName = await querys.insertProducts(newObj);
+  console.log(insertName);
+  if (insertName.type) {
+    return res.status(Number(insertName.type)).json({ message: insertName.message });
+  }
   return res.status(201).json(newObj);
 };
 
