@@ -2,10 +2,13 @@ const chai = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/db/connection')
 const model = require('../../../src/models/products.model');
+const sinonChai = require('sinon-chai');
 
 const chaiHttp = require('chai-http');
 const express = require('express');
 const { expect } = require('chai');
+
+chai.use(sinonChai)
 
 const mockProducts = [
   {
@@ -38,9 +41,9 @@ describe('Tests Models', function () {
     expect(newItem).to.equal(mockProducts)
   });
   // it('Test find by id products', async function () {
-  //   sinon.stub(connection, 'execute').resolves([[mockFindId]]);
-  //   const findId = await model.findById(2);
+  //   sinon.stub(connection, 'execute').resolves(mockFindId);
+  //   // const findId = await model.findById(2);
 
-  //   expect(findId).to.be.deep.equal(mockFindId);
+  //   expect(findId).to.have.been.called();
   // });
 });

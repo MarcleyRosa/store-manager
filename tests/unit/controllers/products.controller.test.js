@@ -6,6 +6,7 @@ const connection = require('../../../src/db/connection');
 const { routerAllProducts, routerProductsById } = require('../../../src/controllers/products.controller');
 const sinonChai = require('sinon-chai');
 const productsAll = require('../../../src/services/products.services');
+const { mockProducts } = require('../mochs');
 
 
 const express = require('express');
@@ -16,21 +17,6 @@ const app = express();
 const { expect, use } = chai;
 
 use(chaiHttp);
-
-const mockProducts = [
-  {
-      id: 1,
-      name: "Martelo de Thor"
-    },
-    {
-      id: 2,
-      name: "Traje de encolhimento"
-    },
-    {
-      id: 3,
-      name: "Escudo do Capitão América"
-    }
-]
 
 describe('Tests routers /products', function () {
   it('Tests endpoints /products find all products', async function () {
