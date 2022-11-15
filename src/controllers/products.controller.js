@@ -37,10 +37,6 @@ const controllerPostSales = async (req, res) => {
     id: 3,
     itemsSold: salesProducts,
   };
-  const objSales = {
-    id: 8,
-    date: new Date(),
-  };
   const requestDB = await querys.insertSales(salesProducts);
     if (requestDB.type) {
     return res.status(Number(requestDB.type)).json({ message: requestDB.message });
