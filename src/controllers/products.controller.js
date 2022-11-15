@@ -1,26 +1,18 @@
 const querys = require('../services/products.services');
 
 const routerAllProducts = async (_req, res) => {
-    try {
-      const [products] = await querys.getAllProducts();
+    const [products] = await querys.getAllProducts();
 
     return res.status(200).json(products);
-  } catch (error) {
-    return res.status(404).json({ message: 'Product not found' });
-  }
 };
 
 const routerProductsById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const [[products]] = await querys.getProductsById(id);
+  const { id } = req.params;
+  const products = await querys.getProductsById(Number(id));
     if (!products) {
       return res.status(404).json({ message: 'Product not found' });
     }
     return res.status(200).json(products);
-  } catch (error) {
-    return res.status(400).json({ message: 'deu ruim' });
-  }
 };
 
 const routerPostProducts = async (req, res) => {
@@ -32,15 +24,33 @@ const routerPostProducts = async (req, res) => {
     name: item.name,
   };
   const insertName = await querys.insertProducts(newObj);
-  console.log(insertName);
   if (insertName.type) {
     return res.status(Number(insertName.type)).json({ message: insertName.message });
   }
   return res.status(201).json(newObj);
 };
 
+const controllerPostSales = async (req, res) => {
+  const salesProducts = req.body;
+
+  const objSalesProducts = {
+    id: 3,
+    itemsSold: salesProducts,
+  };
+  const objSales = {
+    id: 8,
+    date: new Date(),
+  };
+  const requestDB = await querys.insertSales(salesProducts);
+    if (requestDB.type) {
+    return res.status(Number(requestDB.type)).json({ message: requestDB.message });
+  }
+  return res.status(201).json(objSalesProducts);
+};
+
 module.exports = {
   routerAllProducts,
   routerProductsById,
   routerPostProducts,
+  controllerPostSales,
 };

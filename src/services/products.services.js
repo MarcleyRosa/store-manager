@@ -1,7 +1,8 @@
 const querys = require('../models/products.model');
-const { validateLength, validateName } = require('./validations/validationInput');
+const { validateLength, validateName,
+  validateProductId } = require('./validations/validationInput');
 
-const getAllProducts = () => querys.findAll();
+const getAllProducts = () => querys.findAll('products');
 
 const getProductsById = async (id) => {
   const products = await querys.findById(id);
@@ -11,16 +12,26 @@ const getProductsById = async (id) => {
 const insertProducts = async (products) => {
   const errorName = validateName(products.name);
   const errorLength = validateLength(products.name);
+  const table = 'products';
   if (errorLength.type) return errorLength;
   if (errorName.type) return errorName;
 
-  const insertName = await querys.insert(products);
+  const insertName = await querys.insert(products, table);
   if (insertName) return { type: null, message: insertName };
-  return { type: 'Name is required', message: 'Name is not found' };
+};
+
+const insertSales = async (allProducts) => {
+  const [productsId] = await querys.findAll('products');
+  const valid = validateProductId(productsId, allProducts);
+  if (valid.type) return valid;
+  await querys.insert({ id: 3, date: new Date() }, 'sales');
+  await querys.insertSalesProducts(allProducts);
+  return { type: null, message: '' };
 };
 
 module.exports = {
   getAllProducts,
   getProductsById,
   insertProducts,
+  insertSales,
 };
