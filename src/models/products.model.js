@@ -5,6 +5,21 @@ const findAll = async (table) => connection.execute(
     `SELECT * FROM StoreManager.${table};`,
 );
 
+const findAllSales = async () => {
+  const returnAll = connection.execute(
+    `SELECT sale_id AS saleId, product_id AS productId, quantity,
+    date FROM StoreManager.sales_products AS p
+    INNER JOIN StoreManager.sales AS s ON p.sale_id = s.id;`,
+);
+  return returnAll;
+};
+
+const findIdSales = async (id) => connection.execute(
+  `SELECT product_id AS productId, quantity, date FROM StoreManager.sales_products
+  INNER JOIN StoreManager.sales WHERE sale_id = ?
+  ORDER BY product_id, quantity LIMIT 2 OFFSET 1;;`, [id],
+);
+
 const findById = async (id) => {
   const [[selectId]] = await connection.execute(
     'SELECT * FROM StoreManager.products WHERE id = ?',
@@ -54,4 +69,6 @@ module.exports = {
   update,
   remove,
   insertSalesProducts,
+  findIdSales,
+  findAllSales,
 };

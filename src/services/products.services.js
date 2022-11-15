@@ -1,12 +1,21 @@
 const querys = require('../models/products.model');
 const { validateLength, validateName,
-  validateProductId } = require('./validations/validationInput');
+  validateProductId, validateGetSales } = require('./validations/validationInput');
 
 const getAllProducts = () => querys.findAll('products');
+
+const getAllSales = () => querys.findAllSales('sales_products');
 
 const getProductsById = async (id) => {
   const products = await querys.findById(id);
   return products;
+};
+
+const getSalesById = async (id) => {
+  const [sales] = await querys.findIdSales(id);
+  const error = validateGetSales(sales);
+  if (error) return error;
+  return sales;
 };
 
 const insertProducts = async (products) => {
@@ -34,4 +43,6 @@ module.exports = {
   getProductsById,
   insertProducts,
   insertSales,
+  getAllSales,
+  getSalesById,
 };

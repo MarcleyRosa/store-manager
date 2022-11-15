@@ -44,9 +44,23 @@ const controllerPostSales = async (req, res) => {
   return res.status(201).json(objSalesProducts);
 };
 
+const controllerGetSales = async (_req, res) => {
+  const [sales] = await querys.getAllSales();
+  res.status(200).json(sales);
+};
+
+const controllerGetSalesById = async (req, res) => {
+  const { id } = req.params;
+  const sales = await querys.getSalesById(Number(id));
+  if (sales.type) return res.status(Number(sales.type)).json({ message: sales.message });
+  res.status(200).json(sales.message);
+};
+
 module.exports = {
   routerAllProducts,
   routerProductsById,
   routerPostProducts,
   controllerPostSales,
+  controllerGetSales,
+  controllerGetSalesById,
 };

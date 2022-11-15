@@ -41,11 +41,20 @@ describe('Tests Models', function () {
     expect(newItem).to.equal(mockProducts);
   });
   it('Test find by id products', async function () {
-    // const ts = sinon.stub(connection, 'execute').resolves(mockProducts);
-    // console.log(ts);
-    // const findId = await model.findById();
-    // console.log('find model ', findId);
+    sinon.stub(connection, 'execute').resolves([[mockProducts[0]]]);
+    const findId = await model.findById(1);
+    console.log('find model ', findId);
 
-    // expect(findId).to.be.equal(mockProducts[1]);
+    expect(findId).to.be.equal(mockProducts[0]);
   });
+    it('Test find by id products', async function () {
+      sinon.stub(connection, 'execute').resolves([{ insertId: 2 }]);
+    const findId = await model.insert({ name: 'testName'}, 'products');
+    console.log('find model ', findId);
+
+    expect(findId).to.be.equal(2); 
+  });
+  afterEach(function () {
+     sinon.restore();
+   });
 });

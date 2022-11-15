@@ -2,7 +2,6 @@ const { isName, lengthName } = require('./schema');
 
 const validateName = (name) => {
   const { error } = isName.validate(name);
-  console.log(error);
 
   if (error) return { type: '400', message: '"name" is required' };
 
@@ -11,7 +10,6 @@ const validateName = (name) => {
 
 const validateLength = (name) => {
   const { error } = lengthName.validate(name);
-  // console.log(error.details[0].type);
 
   if (error) {
  return {
@@ -21,6 +19,12 @@ const validateLength = (name) => {
 }
 
    return { type: null, message: '' };
+};
+
+const validateGetSales = (array) => {
+  if (!array.length) return { type: '404', message: 'Sale not found' };
+
+    return { type: null, message: array };
 };
 
 const validateProductId = (allProducts, salesArray = []) => {
@@ -44,4 +48,5 @@ module.exports = {
   validateLength,
   validateName,
   validateProductId,
+  validateGetSales,
 };
