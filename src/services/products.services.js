@@ -39,11 +39,20 @@ const insertSales = async (allProducts) => {
 };
 
 const updateProducts = async (product, id) => {
-  await querys.update(product, id);
   const findId = await querys.findById(id);
   const validatePutName = getPutNameValidate(findId);
   if (validatePutName.type) return validatePutName;
+  await querys.update(product, id);
   
+  return { type: null, message: 'Update Sucessful' };
+};
+
+const deleteProducts = async (id) => {
+  const findId = await querys.findById(id);
+  const validatePutName = getPutNameValidate(findId);
+  if (validatePutName.type) return validatePutName;
+  await querys.remove(id);
+
   return { type: null, message: 'Update Sucessful' };
 };
 
@@ -55,4 +64,5 @@ module.exports = {
   getAllSales,
   getSalesById,
   updateProducts,
+  deleteProducts,
 };
