@@ -45,9 +45,9 @@ describe('Tests camada services', function () {
 
     expect(insertName.type).to.deep.equal('422');
   })
-  it('Test quantuty value < 1', async function () {
-    const quantity = await getAllProducts.insertSales(mockAllProducts);
+  // it('Test quantuty value < 1', async function () {
+  //   const quantity = await getAllProducts.insertSales(mockAllProducts);
 
-    expect(quantity.type).to.be.equal(null)
-  })
+  //   expect(quantity.type).to.be.equal(null)
+  // })
 })
