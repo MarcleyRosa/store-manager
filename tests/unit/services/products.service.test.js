@@ -5,7 +5,7 @@ const chaiHttp = require('chai-http');
 const { getProductsById, insertProducts } = require('../../../src/services/products.services');
 const sinonChai = require('sinon-chai');
 const model = require('../../../src/models/products.model');
-const { mockProducts, mockAllProducts } = require('../mochs');
+const { mockProducts, mockAllProducts, mockFindIdSales } = require('../mochs');
 const getAllProducts = require('../../../src/services/products.services');
 
 
@@ -32,22 +32,58 @@ describe('Tests camada services', function () {
     expect(insertName.message).to.deep.equal(mockProducts[0]);
   })
   it('Tests insertProducts not name', async function () {
-    // sinon.stub(model, 'insert').resolves({});
+    sinon.stub(model, 'insert').resolves({});
 
     const insertName = await insertProducts({})
 
     expect(insertName.type).to.deep.equal('400');
   })
   it('Tests insertProducts name length invalid', async function () {
-    // sinon.stub(model, 'insert').resolves({});
+    sinon.stub(model, 'insert').resolves(undefined);
 
-    const insertName = await insertProducts({ name: 'MR'})
+    const insertName = await insertProducts({ name: 'MR' })
 
     expect(insertName.type).to.deep.equal('422');
   })
-  // it('Test quantuty value < 1', async function () {
-  //   const quantity = await getAllProducts.insertSales(mockAllProducts);
+  it('Test quantuty value < 1', async function () {
+    const quantity = await getAllProducts.insertSales(mockAllProducts);
 
-  //   expect(quantity.type).to.be.equal(null)
+    expect(Number(quantity.type)).to.be.equal(404)
+  })
+
+  it('Tests getSalesById sucessful', async function () {
+    sinon.stub(model, 'findIdSales').resolves([mockFindIdSales]);
+
+    const findById = await getAllProducts.getSalesById(2);
+
+    expect(findById).to.be.deep.equal({ type: null, message: mockFindIdSales});
+  })
+
+  //  it('Tests getSalesById not found', async function () {
+  //   sinon.stub(model, 'findIdSales').resolves({ type: '404', message: ''});
+
+  //   const findById = await getAllProducts.getSalesById(10);
+
+  //   expect(findById).to.be.deep.equal({ type: null, message: mockFindIdSales});
   // })
+
+  it('Tests update func updateProducts sucessful', async function () {
+    sinon.stub(model, 'findById').resolves(mockProducts[0]);
+
+    const setUpdate = await getAllProducts.updateProducts('nametest', 2);
+
+    expect(setUpdate).to.be.deep.equal({ type: null, message: 'Update Sucessful'});
+  })
+
+  it('Tests update func updateProducts sucessful', async function () {
+    sinon.stub(model, 'findById').resolves(mockProducts[0]);
+
+    const setUpdate = await getAllProducts.deleteProducts(2);
+
+    expect(setUpdate).to.be.deep.equal({ type: null, message: 'Update Sucessful'});
+  })
+
+   afterEach(function () {
+     sinon.restore();
+   });
 })

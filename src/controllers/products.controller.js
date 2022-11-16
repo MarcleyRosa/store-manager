@@ -61,7 +61,6 @@ const controllerPutProductId = async (req, res) => {
   const { name } = req.body;
   const ids = Number(id);
   const isNamePut = await querys.updateProducts(name, ids);
-  console.log('controlleeer', isNamePut);
   if (isNamePut.type) return res.status(404).json({ message: 'Product not found' });
   return res.status(200).json({ id: ids, name });
 };

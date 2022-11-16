@@ -23,7 +23,16 @@ const mockAllProducts = [
   }
 ]
 
+const mockFindIdSales = [
+  {
+    productId: 2,
+    quantity: 10,
+    date: '2022-11-16 12:59:50',
+  }
+]
+
 module.exports = {
   mockProducts,
   mockAllProducts,
+  mockFindIdSales,
 }
