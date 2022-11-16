@@ -18,16 +18,16 @@
     "colId": "history",
     "containerId": "",
     "name": "localhost:3000/products",
-    "url": "localhost:3000/products",
-    "method": "POST",
+    "url": "localhost:3000/products/9999",
+    "method": "PUT",
     "sortNum": 0,
     "created": "2022-11-11T21:32:50.123Z",
-    "modified": "2022-11-14T21:16:42.428Z",
+    "modified": "2022-11-16T12:33:21.536Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"name\": \"oX\"\n}",
+      "raw": "{\n  \"name\": \"awaaaaa\"\n}",
       "form": []
     },
     "tests": []

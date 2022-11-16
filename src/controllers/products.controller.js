@@ -46,14 +46,24 @@ const controllerPostSales = async (req, res) => {
 
 const controllerGetSales = async (_req, res) => {
   const [sales] = await querys.getAllSales();
-  res.status(200).json(sales);
+  return res.status(200).json(sales);
 };
 
 const controllerGetSalesById = async (req, res) => {
   const { id } = req.params;
   const sales = await querys.getSalesById(Number(id));
   if (sales.type) return res.status(Number(sales.type)).json({ message: sales.message });
-  res.status(200).json(sales.message);
+  return res.status(200).json(sales.message);
+};
+
+const controllerPutProductId = async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  const ids = Number(id);
+  const isNamePut = await querys.updateProducts(name, ids);
+  console.log('controlleeer', isNamePut);
+  if (isNamePut.type) return res.status(404).json({ message: 'Product not found' });
+  return res.status(200).json({ id: ids, name });
 };
 
 module.exports = {
@@ -63,4 +73,5 @@ module.exports = {
   controllerPostSales,
   controllerGetSales,
   controllerGetSalesById,
+  controllerPutProductId,
 };

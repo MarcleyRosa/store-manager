@@ -1,4 +1,4 @@
-const { isName, lengthName } = require('./schema');
+const { isName, lengthName, salesProduct } = require('./schema');
 
 const validateName = (name) => {
   const { error } = isName.validate(name);
@@ -44,9 +44,16 @@ const validateProductId = (allProducts, salesArray = []) => {
   return { type: null, message: '' };
 };
 
+const getPutNameValidate = (name) => {
+  const { error } = salesProduct.validate(name);
+  if (error) return { type: '404', message: 'Product not found' };
+  return { type: null, message: 'sucessfull' };
+};
+
 module.exports = {
   validateLength,
   validateName,
   validateProductId,
   validateGetSales,
+  getPutNameValidate,
 };

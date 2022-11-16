@@ -52,9 +52,9 @@ const insertSalesProducts = async (products) => {
   return returnInsert;
 };
 
-const update = (products, id) => connection.execute(
-    'UPDATE StoreManager.products SET nome = ? WHERE id = ?',
-    [products.name, id],
+const update = (product, id) => connection.execute(
+    'UPDATE StoreManager.products SET name = ? WHERE id = ?',
+    [product, id],
 );
 
 const remove = (id) => connection.execute(

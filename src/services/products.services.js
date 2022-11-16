@@ -1,6 +1,6 @@
 const querys = require('../models/products.model');
-const { validateLength, validateName,
-  validateProductId, validateGetSales } = require('./validations/validationInput');
+const { validateLength, validateName, validateProductId,
+  validateGetSales, getPutNameValidate } = require('./validations/validationInput');
 
 const getAllProducts = () => querys.findAll('products');
 
@@ -38,6 +38,15 @@ const insertSales = async (allProducts) => {
   return { type: null, message: '' };
 };
 
+const updateProducts = async (product, id) => {
+  await querys.update(product, id);
+  const findId = await querys.findById(id);
+  const validatePutName = getPutNameValidate(findId);
+  if (validatePutName.type) return validatePutName;
+  
+  return { type: null, message: 'Update Sucessful' };
+};
+
 module.exports = {
   getAllProducts,
   getProductsById,
@@ -45,4 +54,5 @@ module.exports = {
   insertSales,
   getAllSales,
   getSalesById,
+  updateProducts,
 };

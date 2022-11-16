@@ -1,4 +1,4 @@
-const { productId, quantity } = require('./schema');
+const { productId, quantity, putName } = require('./schema');
 
 const validateProductId = (req, res, next) => {
   const salesProducts = req.body;
@@ -30,7 +30,25 @@ const validateQuantity = (req, res, next) => {
   return next();
 };
 
+const validatePutName = (req, res, next) => {
+  const { name } = req.body;
+
+  const { error } = putName.validate(name);
+ 
+  if (error) {
+    const typeError = error.details[0].type;
+    console.log(typeError);
+    const messageError = typeError === 'string.min'
+    ? '"name" length must be at least 5 characters long'
+  : '"name" is required';
+  const status = typeError === 'string.min' ? 422 : 400;
+    return res.status(status).json({ message: messageError });
+  } 
+  return next();
+};
+
 module.exports = {
   validateProductId,
   validateQuantity,
+  validatePutName,
 };
