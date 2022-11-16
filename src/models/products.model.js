@@ -27,6 +27,15 @@ const findById = async (id) => {
   );
   return selectId;
 };
+
+const findBySaleId = async (id) => {
+  const [[selectId]] = await connection.execute(
+    'SELECT * FROM StoreManager.sales WHERE id = ?',
+    [id],
+  );
+  return selectId;
+};
+
 const insert = async (products, table) => {
   const columns = Object.keys(snakeize(products))
     .map((key) => `${key}`)
@@ -61,6 +70,10 @@ const remove = (id) => connection.execute(
     'DELETE FROM StoreManager.products WHERE id = ?',
     [id],
 );
+const removeSales = (id) => connection.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?',
+    [id],
+);
 
 module.exports = {
   findAll,
@@ -71,4 +84,6 @@ module.exports = {
   insertSalesProducts,
   findIdSales,
   findAllSales,
+  findBySaleId,
+  removeSales,
 };

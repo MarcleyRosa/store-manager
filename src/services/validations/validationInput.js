@@ -50,10 +50,17 @@ const getPutNameValidate = (name) => {
   return { type: null, message: 'sucessfull' };
 };
 
+const getPutSaleValidate = (name) => {
+  const { error } = salesProduct.validate(name);
+  if (error) return { type: '404', message: 'Sale not found' };
+  return { type: null, message: 'sucessfull' };
+};
+
 module.exports = {
   validateLength,
   validateName,
   validateProductId,
   validateGetSales,
   getPutNameValidate,
+  getPutSaleValidate,
 };

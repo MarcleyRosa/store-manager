@@ -1,6 +1,6 @@
 const querys = require('../models/products.model');
-const { validateLength, validateName, validateProductId,
-  validateGetSales, getPutNameValidate } = require('./validations/validationInput');
+const { validateLength, validateName, validateProductId, validateGetSales,
+  getPutNameValidate } = require('./validations/validationInput');
 
 const getAllProducts = () => querys.findAll('products');
 
@@ -56,6 +56,16 @@ const deleteProducts = async (id) => {
   return { type: null, message: 'Update Sucessful' };
 };
 
+const deleteSales = async (id) => {
+  console.log('entrei');
+  const findId = await querys.findBySaleId(id);
+  const validatePutName = getPutNameValidate(findId);
+  if (validatePutName.type) return validatePutName;
+  await querys.removeSales(id);
+
+  return { type: null, message: 'Update Sucessful' };
+};
+
 module.exports = {
   getAllProducts,
   getProductsById,
@@ -65,4 +75,5 @@ module.exports = {
   getSalesById,
   updateProducts,
   deleteProducts,
+  deleteSales,
 };
