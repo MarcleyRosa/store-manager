@@ -2,10 +2,9 @@ const chai = require('chai');
 const sinon = require('sinon');
 
 const chaiHttp = require('chai-http');
-const { getProductsById, insertProducts } = require('../../../src/services/products.services');
 const sinonChai = require('sinon-chai');
 const model = require('../../../src/models/products.model');
-const { mockProducts, mockAllProducts, mockFindIdSales } = require('../mochs');
+const { mockProducts, mockAllProducts, mockFindIdSales, findsProducts, mockFindSales } = require('../mochs');
 const getAllProducts = require('../../../src/services/products.services');
 
 
@@ -16,32 +15,34 @@ const app = express();
 
 const { expect, use } = chai;
 
+const mckBodyProducts = [ { productId: 1, quantity: 1 }, { productId: 2, quantity: 5 } ]
+
 describe('Tests camada services', function () {
   it('Tests findById and getProductsById', async function () {
     sinon.stub(model, 'findById').resolves(mockProducts[0]);
 
-    const findById = await getProductsById(1)
+    const findById = await getAllProducts.getProductsById(1)
 
     expect(findById).to.deep.equal(mockProducts[0]);
   })
   it('Tests insertProducts name', async function () {
     sinon.stub(model, 'insert').resolves(mockProducts[0]);
 
-    const insertName = await insertProducts({ name: 'nametest' })
+    const insertName = await getAllProducts.insertProducts({ name: 'nametest' })
 
     expect(insertName.message).to.deep.equal(mockProducts[0]);
   })
   it('Tests insertProducts not name', async function () {
     sinon.stub(model, 'insert').resolves({});
 
-    const insertName = await insertProducts({})
+    const insertName = await getAllProducts.insertProducts({})
 
     expect(insertName.type).to.deep.equal('400');
   })
   it('Tests insertProducts name length invalid', async function () {
     sinon.stub(model, 'insert').resolves(undefined);
 
-    const insertName = await insertProducts({ name: 'MR' })
+    const insertName = await getAllProducts.insertProducts({ name: 'MR' })
 
     expect(insertName.type).to.deep.equal('422');
   })
@@ -81,6 +82,38 @@ describe('Tests camada services', function () {
     const setUpdate = await getAllProducts.deleteProducts(2);
 
     expect(setUpdate).to.be.deep.equal({ type: null, message: 'Update Sucessful'});
+  })
+
+  it('Tests update Sales Products Sucessfull', async function () {
+    sinon.stub(model, 'findBySaleId').resolves(mockFindSales);
+
+    const setUpdate = await getAllProducts.updateSalesProducts(mckBodyProducts, 2);
+
+    expect(setUpdate).to.be.deep.equal({ type: null, message: 'Update Sucessful'});
+  })
+
+  it('Tests Search Products', async function () {
+    sinon.stub(model, 'findAll').resolves([mockProducts]);
+
+    const setUpdate = await getAllProducts.searchProduct('Martelo');
+
+    expect(setUpdate).to.be.deep.equal(findsProducts);
+  })
+
+  it('Tests Search Products not params', async function () {
+    sinon.stub(model, 'findAll').resolves([mockProducts]);
+
+    const setUpdate = await getAllProducts.searchProduct('');
+
+    expect(setUpdate).to.be.deep.equal(mockProducts);
+  })
+
+  it('Tests Delete Sales', async function () {
+    sinon.stub(model, 'findBySaleId').resolves(mockFindSales);
+
+    const setUpdate = await getAllProducts.deleteSales(1);
+
+    expect(setUpdate).to.be.deep.equal({ type: null, message: 'Update Sucessful' });
   })
 
    afterEach(function () {

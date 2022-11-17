@@ -1,6 +1,5 @@
 const querys = require('../models/products.model');
-const { validateLength, validateName, validateProductId, validateGetSales, getPutNameValidate,
-  setUpdateProducts, getPutSaleValidate } = require('./validations/validationInput');
+const getValidate = require('./validations/validationInput');
 
 const getAllProducts = () => querys.findAll('products');
 
@@ -13,14 +12,14 @@ const getProductsById = async (id) => {
 
 const getSalesById = async (id) => {
   const [sales] = await querys.findIdSales(id);
-  const error = validateGetSales(sales);
+  const error = getValidate.validateGetSales(sales);
   if (error) return error;
   return sales;
 };
 
 const insertProducts = async (products) => {
-  const errorName = validateName(products.name);
-  const errorLength = validateLength(products.name);
+  const errorName = getValidate.validateName(products.name);
+  const errorLength = getValidate.validateLength(products.name);
   const table = 'products';
   if (errorLength.type) return errorLength;
   if (errorName.type) return errorName;
@@ -31,7 +30,7 @@ const insertProducts = async (products) => {
 
 const insertSales = async (allProducts) => {
   const [productsId] = await querys.findAll('products');
-  const valid = validateProductId(productsId, allProducts);
+  const valid = getValidate.validateProductId(productsId, allProducts);
   if (valid.type) return valid;
   await querys.insert({ id: 3, date: new Date() }, 'sales');
   await querys.insertSalesProducts(allProducts);
@@ -40,7 +39,7 @@ const insertSales = async (allProducts) => {
 
 const updateProducts = async (product, id) => {
   const findId = await querys.findById(id);
-  const validatePutName = getPutNameValidate(findId);
+  const validatePutName = getValidate.getPutNameValidate(findId);
   if (validatePutName.type) return validatePutName;
   await querys.update(product, id);
   
@@ -49,7 +48,7 @@ const updateProducts = async (product, id) => {
 
 const deleteProducts = async (id) => {
   const findId = await querys.findById(id);
-  const validatePutName = getPutNameValidate(findId);
+  const validatePutName = getValidate.getPutNameValidate(findId);
   if (validatePutName.type) return validatePutName;
   await querys.remove(id);
 
@@ -58,7 +57,7 @@ const deleteProducts = async (id) => {
 
 const deleteSales = async (id) => {
   const findId = await querys.findBySaleId(id);
-  const validatePutName = getPutNameValidate(findId);
+  const validatePutName = getValidate.getPutNameValidate(findId);
   if (validatePutName.type) return validatePutName;
   await querys.removeSales(id);
 
@@ -67,20 +66,25 @@ const deleteSales = async (id) => {
 
 const updateSalesProducts = async (sales, id) => {
   const findId = await querys.findBySaleId(id);
-  const validatePutName = getPutSaleValidate(findId);
-  const setProducts = setUpdateProducts(sales);
+  const validatePutName = getValidate.getPutSaleValidate(findId);
+  const setProducts = getValidate.setUpdateProducts(sales);
 
-  console.log('1 valid', validatePutName);
-  console.log('2 valid', setProducts);
   if (validatePutName.type) return validatePutName;
   if (setProducts.type) return setProducts;
 
-  console.log('entreiiiiis');
   if (sales.length >= 2) {
     await querys.updateSales(sales, id);
   }
   
   return { type: null, message: 'Update Sucessful' };
+};
+
+const searchProduct = async (q) => {
+  const [findAllPrducts] = await querys.findAll('products');
+  if (q) {
+    return findAllPrducts.filter((product) => product.name.includes(q));
+  }
+  if (!q.length) return findAllPrducts;
 };
 
 module.exports = {
@@ -94,4 +98,5 @@ module.exports = {
   deleteProducts,
   deleteSales,
   updateSalesProducts,
+  searchProduct,
 };

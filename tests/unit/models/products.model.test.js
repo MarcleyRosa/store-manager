@@ -7,6 +7,8 @@ const sinonChai = require('sinon-chai');
 const chaiHttp = require('chai-http');
 const express = require('express');
 const { expect } = require('chai');
+const { mockFindSales } = require('../mochs');
+
 
 chai.use(sinonChai)
 
@@ -42,12 +44,22 @@ describe('Tests Models', function () {
 
     expect(findId).to.be.equal(mockProducts[0]);
   });
-    it('Test find by id products', async function () {
+  
+  it('Test find by id products', async function () {
       sinon.stub(connection, 'execute').resolves([{ insertId: 2 }]);
     const findId = await model.insert({ name: 'testName'}, 'products');
 
     expect(findId).to.be.equal(2); 
   });
+  
+  it('Test find by id Sales', async function () {
+    sinon.stub(connection, 'execute').resolves([[mockFindSales]]);
+    const findId = await model.findBySaleId(1);
+
+    expect(findId).to.be.equal(mockFindSales); 
+  });
+  
+  
   afterEach(function () {
      sinon.restore();
    });

@@ -60,7 +60,6 @@ const setUpdateProducts = (productsBody) => {
     let isError = false;
   productsBody.forEach((element) => {
     const { error } = isProduct.validate(element.productId);
-    console.log('elemntss', element.productId);
     if (element.productId > productsBody.length) isError = true;
     if (error) {
       isError = error;

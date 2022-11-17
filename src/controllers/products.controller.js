@@ -75,9 +75,7 @@ const contollerDeleteProduct = async (req, res) => {
 const contollerDeleteSales = async (req, res) => {
   const { id } = req.params;
   const returnDelete = await querys.deleteSales(Number(id));
-  console.log('controlleerrrr', returnDelete);
   if (returnDelete.type) return res.status(404).json({ message: 'Sale not found' });
-  console.log('passeissss');
   return res.status(204).end();
 };
 
@@ -94,6 +92,12 @@ const controllerUpdateSales = async (req, res) => {
   return res.status(200).json(newJson);
 };
 
+const controllerSearchProduct = async (req, res) => {
+  const { q } = req.query;
+  const resultSearch = await querys.searchProduct(q);
+  return res.status(200).json(resultSearch);
+};
+
 module.exports = {
   routerAllProducts,
   routerProductsById,
@@ -105,4 +109,5 @@ module.exports = {
   contollerDeleteProduct,
   contollerDeleteSales,
   controllerUpdateSales,
+  controllerSearchProduct,
 };
