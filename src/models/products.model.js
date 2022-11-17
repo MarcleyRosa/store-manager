@@ -52,11 +52,11 @@ const insert = async (products, table) => {
 
   return insertId;
 };
-const insertSalesProducts = async (products) => {
+const insertSalesProducts = async (products, id) => {
   const returnInsert = await Promise.all(products.map((product) => connection.execute(
     `INSERT INTO StoreManager.sales_products
     (sale_id, product_id, quantity) VALUES (?, ?, ?)`,
-    [3, product.productId, product.quantity],
+    [id, product.productId, product.quantity],
   )));
   return returnInsert;
 };

@@ -33,14 +33,17 @@ const routerPostProducts = async (req, res) => {
 const controllerPostSales = async (req, res) => {
   const salesProducts = req.body;
 
+  const response = await querys.insertSales(salesProducts);
+
+  if (response.type) {
+    return res.status(Number(response.type)).json({ message: response.message });
+  }
+
   const objSalesProducts = {
-    id: 3,
+    id: response.message,
     itemsSold: salesProducts,
   };
-  const requestDB = await querys.insertSales(salesProducts);
-    if (requestDB.type) {
-    return res.status(Number(requestDB.type)).json({ message: requestDB.message });
-  }
+
   return res.status(201).json(objSalesProducts);
 };
 
@@ -52,6 +55,7 @@ const controllerGetSales = async (_req, res) => {
 const controllerGetSalesById = async (req, res) => {
   const { id } = req.params;
   const sales = await querys.getSalesById(Number(id));
+  console.log('ree Sales', sales);
   if (sales.type) return res.status(Number(sales.type)).json({ message: sales.message });
   return res.status(200).json(sales.message);
 };

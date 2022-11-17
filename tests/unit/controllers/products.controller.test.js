@@ -16,6 +16,22 @@ const { expect, use } = chai;
 
 use(chaiHttp);
 
+const impsss = {
+  type: null,
+  message: [
+     {
+      productId: 1,
+      quantity: 1,
+      date: '2022-11-17T18:18:52.000Z'
+    },
+     {
+      productId: 2,
+      quantity: 5,
+      date: '2022-11-17T18:18:52.000Z'
+    }
+  ]
+}
+
 describe('Tests camada controller', function () {
   it('Tests endpoints /products find all products', async function () {
 
@@ -115,11 +131,13 @@ describe('Tests camada controller', function () {
   
   // it('Tests endpoints sales products by id ', async function () {
 
-  //   const req = { params: { id: 2 } };
+  //   const req = { params: { id: 3 } };
   //   const res = {};
 
   //   res.status = sinon.stub().returns(res);
   //   res.json = sinon.stub().returns();
+  
+  //   sinon.stub(productsAll, 'getSalesById').resolves(impsss)
 
   //   await querys.controllerGetSalesById(req, res);
 

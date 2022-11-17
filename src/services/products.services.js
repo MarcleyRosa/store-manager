@@ -31,10 +31,14 @@ const insertProducts = async (products) => {
 const insertSales = async (allProducts) => {
   const [productsId] = await querys.findAll('products');
   const valid = getValidate.validateProductId(productsId, allProducts);
+
+  const lastSalesId = await querys.findAll('sales');
+  const newId = lastSalesId[lastSalesId.length - 1].id + 1;
+
   if (valid.type) return valid;
-  await querys.insert({ id: 3, date: new Date() }, 'sales');
-  await querys.insertSalesProducts(allProducts);
-  return { type: null, message: '' };
+  const insertId = await querys.insert({ id: newId, date: new Date() }, 'sales');
+  await querys.insertSalesProducts(allProducts, insertId);
+  return { type: null, message: insertId };
 };
 
 const updateProducts = async (product, id) => {
