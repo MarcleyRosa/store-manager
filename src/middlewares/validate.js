@@ -2,7 +2,6 @@ const { productId, quantity, putName } = require('./schema');
 
 const validateProductId = (req, res, next) => {
   const salesProducts = req.body;
-
   let isError;
   salesProducts.forEach((element) => {
     const { error } = productId.validate(element.productId);

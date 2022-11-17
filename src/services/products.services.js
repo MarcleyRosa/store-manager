@@ -1,6 +1,6 @@
 const querys = require('../models/products.model');
-const { validateLength, validateName, validateProductId, validateGetSales,
-  getPutNameValidate } = require('./validations/validationInput');
+const { validateLength, validateName, validateProductId, validateGetSales, getPutNameValidate,
+  setUpdateProducts, getPutSaleValidate } = require('./validations/validationInput');
 
 const getAllProducts = () => querys.findAll('products');
 
@@ -57,12 +57,29 @@ const deleteProducts = async (id) => {
 };
 
 const deleteSales = async (id) => {
-  console.log('entrei');
   const findId = await querys.findBySaleId(id);
   const validatePutName = getPutNameValidate(findId);
   if (validatePutName.type) return validatePutName;
   await querys.removeSales(id);
 
+  return { type: null, message: 'Update Sucessful' };
+};
+
+const updateSalesProducts = async (sales, id) => {
+  const findId = await querys.findBySaleId(id);
+  const validatePutName = getPutSaleValidate(findId);
+  const setProducts = setUpdateProducts(sales);
+
+  console.log('1 valid', validatePutName);
+  console.log('2 valid', setProducts);
+  if (validatePutName.type) return validatePutName;
+  if (setProducts.type) return setProducts;
+
+  console.log('entreiiiiis');
+  if (sales.length >= 2) {
+    await querys.updateSales(sales, id);
+  }
+  
   return { type: null, message: 'Update Sucessful' };
 };
 
@@ -76,4 +93,5 @@ module.exports = {
   updateProducts,
   deleteProducts,
   deleteSales,
+  updateSalesProducts,
 };

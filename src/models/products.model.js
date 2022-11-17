@@ -66,6 +66,13 @@ const update = (product, id) => connection.execute(
     [product, id],
 );
 
+const updateSales = async (quant, id) => connection.execute(
+`UPDATE StoreManager.sales_products SET quantity = (
+  CASE product_id WHEN 1 THEN ? WHEN 2 THEN ? ELSE product_id END)
+  WHERE sale_id = ?;`,
+    [quant[0].quantity, quant[1].quantity, id],
+  );
+
 const remove = (id) => connection.execute(
     'DELETE FROM StoreManager.products WHERE id = ?',
     [id],
@@ -86,4 +93,5 @@ module.exports = {
   findAllSales,
   findBySaleId,
   removeSales,
+  updateSales,
 };

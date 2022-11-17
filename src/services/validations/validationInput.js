@@ -1,4 +1,4 @@
-const { isName, lengthName, salesProduct } = require('./schema');
+const { isName, lengthName, salesProduct, isProduct } = require('./schema');
 
 const validateName = (name) => {
   const { error } = isName.validate(name);
@@ -56,6 +56,32 @@ const getPutSaleValidate = (name) => {
   return { type: null, message: 'sucessfull' };
 };
 
+const setUpdateProducts = (productsBody) => {
+    let isError = false;
+  productsBody.forEach((element) => {
+    const { error } = isProduct.validate(element);
+    if (error) {
+      isError = error;
+  }
+    });
+  
+  //     let isError = false;
+  //   productsBody.forEach((element) => {
+  //     const products = productsDB.some((elem) => elem.productId === element.product_id);
+  //     console.log('for each', products);
+  //   if (!products) {
+  //     isError = true;
+  // }
+  // });
+  if (isError) {
+ return {
+      type: '404',
+      message: 'Product not found',
+    }; 
+}
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateLength,
   validateName,
@@ -63,4 +89,5 @@ module.exports = {
   validateGetSales,
   getPutNameValidate,
   getPutSaleValidate,
+  setUpdateProducts,
 };

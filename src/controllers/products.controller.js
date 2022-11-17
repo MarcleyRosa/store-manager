@@ -81,6 +81,19 @@ const contollerDeleteSales = async (req, res) => {
   return res.status(204).end();
 };
 
+const controllerUpdateSales = async (req, res) => {
+  const { id } = req.params;
+  const bodyProducts = req.body;
+  const ids = Number(id);
+  const result = await querys.updateSalesProducts(bodyProducts, ids);
+  if (result.type) return res.status(Number(result.type)).json({ message: result.message });
+  const newJson = {
+    saleId: ids,
+    itemsUpdated: bodyProducts,
+  };
+  return res.status(200).json(newJson);
+};
+
 module.exports = {
   routerAllProducts,
   routerProductsById,
@@ -91,4 +104,5 @@ module.exports = {
   controllerPutProductId,
   contollerDeleteProduct,
   contollerDeleteSales,
+  controllerUpdateSales,
 };
