@@ -59,20 +59,13 @@ const getPutSaleValidate = (name) => {
 const setUpdateProducts = (productsBody) => {
     let isError = false;
   productsBody.forEach((element) => {
-    const { error } = isProduct.validate(element);
+    const { error } = isProduct.validate(element.productId);
+    console.log('elemntss', element.productId);
+    if (element.productId > productsBody.length) isError = true;
     if (error) {
       isError = error;
   }
     });
-  
-  //     let isError = false;
-  //   productsBody.forEach((element) => {
-  //     const products = productsDB.some((elem) => elem.productId === element.product_id);
-  //     console.log('for each', products);
-  //   if (!products) {
-  //     isError = true;
-  // }
-  // });
   if (isError) {
  return {
       type: '404',
