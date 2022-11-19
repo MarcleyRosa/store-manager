@@ -32,15 +32,56 @@ const mockAllProducts = [
 
 const mockFindIdSales = [
   {
-    productId: 2,
-    quantity: 10,
-    date: '2022-11-16 12:59:50',
+    productId: 1,
+    quantity: 1,
+    date: '2022-11-17T21:20:38.000Z',
+  },
+  {
+   date: "2022-11-17T21:20:38.000Z",
+   productId: 2,
+   quantity: 5,
   }
+
 ]
 
 const mockUpdateSales = [
   {productId:1,quantity:1},
   {productId:2,quantity:5},
+]
+
+const setSalesIdDate = [
+   {
+    productId: 1,
+    quantity: 1,
+    date: '2022-11-17T21:20:38.000Z'
+  },
+   {
+    productId: 2,
+    quantity: 5,
+    date: '2022-11-17T21:20:38.000Z'
+  }
+]
+
+const responseMock = {
+  type: null,
+  message: [
+     {
+      productId: 1,
+      quantity: 1,
+      date: '2022-11-17T18:18:52.000Z'
+    },
+     {
+      productId: 2,
+      quantity: 5,
+      date: '2022-11-17T18:18:52.000Z'
+    }
+  ]
+}
+
+
+const mockAllsales = [
+  { id: 1, date: '2022-11-17T23:37:46.000Z' },
+  { id: 2, date: '2022-11-17T23:37:46.000Z' }
 ]
 
 const mockFindSales = { id: 1, date: '2022-11-17T14:43:12.000Z' }
@@ -52,4 +93,7 @@ module.exports = {
   findsProducts,
   mockUpdateSales,
   mockFindSales,
+  setSalesIdDate,
+  mockAllsales,
+  responseMock,
 }

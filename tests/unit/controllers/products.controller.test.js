@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const chaiHttp = require('chai-http');
 const querys = require('../../../src/controllers/products.controller');
 const sinonChai = require('sinon-chai');
-const productsAll = require('../../../src/services/products.services');
+const serviceProducts = require('../../../src/services/products.services');
 const { mockProducts, mockAllProducts, mockUpdateSales, findsProducts } = require('../mochs');
 
 
@@ -16,206 +16,151 @@ const { expect, use } = chai;
 
 use(chaiHttp);
 
-const impsss = {
-  type: null,
-  message: [
-     {
-      productId: 1,
-      quantity: 1,
-      date: '2022-11-17T18:18:52.000Z'
-    },
-     {
-      productId: 2,
-      quantity: 5,
-      date: '2022-11-17T18:18:52.000Z'
-    }
-  ]
-}
+describe('Tests Products Layer Controller', function () {
 
-describe('Tests camada controller', function () {
-  it('Tests endpoints /products find all products', async function () {
+  describe('Tests AllProducts successful and not found', function () {
+    it('endpoints /products find all products', async function () {
 
-    const req = {};
-    const res = {};
+      const req = {};
+      const res = {};
 
-    const message = { message: 'Product not found' };
-    const status = 200;
+      const message = { message: 'Product not found' };
+      const status = 200;
 
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns()
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns()
   
-    sinon.stub(productsAll, 'getAllProducts').resolves(mockProducts)
+      sinon.stub(serviceProducts, 'getAllProducts').resolves(mockProducts)
 
-    await querys.routerAllProducts(req, res);
+      await querys.routerAllProducts(req, res);
 
-    expect(res.status).to.have.been.calledWith(status)
-    // expect(res.json).to.have.been.calledWith(mockProducts)
+      expect(res.status).to.have.been.calledWith(status)
+      // expect(res.json).to.have.been.calledWith(mockProducts)
+    });
+
   });
 
-  it('Tests endpoints /products find all products', async function () {
+  describe('Tests find by id and noy found ', function () {
 
-    const req = { params: { id: 1 }};
-    const res = {};
+    it('endpoints /products find products by id', async function () {
 
-    const message = { message: 'Product not found' };
-    const status = 200;
-    const id = 1;
+      const req = { params: { id: 1 }};
+      const res = {};
 
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
+      const message = { message: 'Product not found' };
+      const status = 200;
+      const id = 1;
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
   
-    sinon.stub(productsAll, 'getProductsById').resolves(mockProducts[0]);
+      sinon.stub(serviceProducts, 'getProductsById').resolves(mockProducts[0]);
 
-    await querys.routerProductsById(req, res);
+      await querys.routerProductsById(req, res);
 
-    expect(res.status).to.have.been.calledWith(200);
-  });
+      expect(res.status).to.have.been.calledWith(200);
+    });
+
+  })
   
-  it('Tests endpoints insert Products sucessfull', async function () {
+  describe('Tests endpoint post products and not found', function () {
+    it('Endpoints insert Products sucessfull', async function () {
 
-    const req = { body: { name: 'nametest' }};
-    const res = {};
+      const req = { body: { name: 'nametest' }};
+      const res = {};
 
-    const message = { message: 'Product not found' };
-    const status = 201;
-    const id = 1;
+      const message = { message: 'Product not found' };
+      const status = 201;
+      const id = 1;
 
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
   
-    sinon.stub(productsAll, 'insertProducts').resolves(mockProducts[0]);
+      sinon.stub(serviceProducts, 'insertProducts').resolves(mockProducts[0]);
 
-    await querys.routerPostProducts(req, res);
+      await querys.routerPostProducts(req, res);
 
-    expect(res.status).to.have.been.calledWith(status);
-   });
+      expect(res.status).to.have.been.calledWith(status);
+    });
+
+    it('Endpoint post product not found', async function () {
+
+      const req = { body: { id: 'nametest' }};
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await querys.routerPostProducts(req, res);
+
+      expect(res.status).to.have.been.calledWith(400);
+    });
+
+    it('Tests endpoints post id is not found', async function () {
+
+      const req = { params: { notId: 1 } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await querys.routerProductsById(req, res);
+
+      expect(res.status).to.have.been.calledWith(404)
+    })
+  })
   
-  it('Tests post product not found', async function () {
+  describe('Tests Sales Products by id and not found', function () {
+    it('Tests endpoints sales products by id ', async function () {
 
-    const req = { body: { id: 'nametest' }};
-    const res = {};
+      sinon.stub(serviceProducts, 'updateProducts').resolves(mockProducts[0]);
+      const req = { body: { name: 'nametest'}, params: { id: 2 } };
+      const res = {};
 
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
 
-    await querys.routerPostProducts(req, res);
+      await querys.controllerPutProductId(req, res);
 
-    expect(res.status).to.have.been.calledWith(400);
-  });
-  
-  it('Tests endpoints post id is not found', async function () {
-
-    const req = { params: { notId: 1 } };
-    const res = {};
-
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-
-    await querys.routerProductsById(req, res);
-
-    expect(res.status).to.have.been.calledWith(404)
+      expect(res.status).to.have.been.calledWith(200)
+    })
   })
 
-  // it('Tests endpoints insert sales ', async function () {
+  describe('Tests delete product by id and not found', function () {
+    it('endpoints delete products by id ', async function () {
 
-  //   const req = { body: mockAllProducts };
-  //   const res = {};
+      sinon.stub(serviceProducts, 'deleteProducts').resolves(2);
+      const req = { params: { id: 2 } };
+      const res = {};
 
-  //   res.status = sinon.stub().returns(res);
-  //   res.json = sinon.stub().returns();
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
 
-  //   await querys.controllerPostSales(req, res);
+      await querys.contollerDeleteProduct(req, res);
 
-  //   expect(res.status).to.have.been.calledWith(404)
-  //  })
-  
-  // it('Tests endpoints sales products by id ', async function () {
-
-  //   const req = { params: { id: 3 } };
-  //   const res = {};
-
-  //   res.status = sinon.stub().returns(res);
-  //   res.json = sinon.stub().returns();
-  
-  //   sinon.stub(productsAll, 'getSalesById').resolves(impsss)
-
-  //   await querys.controllerGetSalesById(req, res);
-
-  //   expect(res.status).to.have.been.calledWith(404)
-  // })
-
-  it('Tests endpoints sales products by id ', async function () {
-
-    sinon.stub(productsAll, 'updateProducts').resolves(mockProducts[0]);
-    const req = { body: { name: 'nametest'}, params: { id: 2 } };
-    const res = {};
-
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-
-    await querys.controllerPutProductId(req, res);
-
-    expect(res.status).to.have.been.calledWith(200)
+      // expect(res.end).to.be.equal(undefined)
+      expect(res.status).to.have.been.calledWith(204);
+    })
   })
 
-  it('Tests endpoints delete products by id ', async function () {
+  describe('', function () {
+    it('Tests endpoints Search Products ', async function () {
 
-    sinon.stub(productsAll, 'deleteProducts').resolves(2);
-    const req = { params: { id: 2 } };
-    const res = {};
+      sinon.stub(serviceProducts, 'searchProduct').resolves(findsProducts);
+      const req = { query: { q: 'Martelo' } };
+      const res = {};
 
-    res.status = sinon.stub().returns(res);
-    res.end = sinon.stub().returns();
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
 
-    await querys.contollerDeleteProduct(req, res);
+      await querys.controllerSearchProduct(req, res);
 
-    // expect(res.end).to.be.equal(undefined)
-    expect(res.status).to.have.been.calledWith(204)
+      expect(res.status).to.have.been.calledWith(200)
   })
-
-  it('Tests endpoints Delete sales ', async function () {
-
-    sinon.stub(productsAll, 'deleteSales').resolves(2);
-    const req = { params: { id: 2 } };
-    const res = {};
-
-    res.status = sinon.stub().returns(res);
-    res.end = sinon.stub().returns();
-
-    await querys.contollerDeleteSales(req, res);
-
-    // expect(res.end).to.be.equal(undefined)
-    expect(res.status).to.have.been.calledWith(204)
-  })
-
-  it('Tests endpoints Update sales ', async function () {
-
-    sinon.stub(productsAll, 'updateSalesProducts').resolves(mockUpdateSales);
-    const req = { params: { id: 2 } };
-    const res = {};
-
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-
-    await querys.controllerUpdateSales(req, res);
-
-    expect(res.status).to.have.been.calledWith(200)
-  })
-
-  it('Tests endpoints Search Products ', async function () {
-
-    sinon.stub(productsAll, 'searchProduct').resolves(findsProducts);
-    const req = { query: { q: 'Martelo' } };
-    const res = {};
-
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-
-    await querys.controllerSearchProduct(req, res);
-
-    expect(res.status).to.have.been.calledWith(200)
-  })
+})
     afterEach(function () {
      sinon.restore();
-   });
-});
+    });
+  
+  
+})

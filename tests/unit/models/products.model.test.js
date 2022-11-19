@@ -1,66 +1,46 @@
-const chai = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/db/connection')
-const model = require('../../../src/models/products.model');
-const sinonChai = require('sinon-chai');
+const modelProducts = require('../../../src/models/products.model');
 
-const chaiHttp = require('chai-http');
-const express = require('express');
 const { expect } = require('chai');
-const { mockFindSales } = require('../mochs');
+const { mockProducts } = require('../mochs');
 
 
-chai.use(sinonChai)
+describe('Tests Products layer Model', function () {
 
-const mockProducts = [
-  {
-      "id": 1,
-      "name": "Martelo de Thor"
-    },
-    {
-      "id": 2,
-      "name": "Traje de encolhimento"
-    },
-    {
-      "id": 3,
-      "name": "Escudo do Capitão América"
-    }
-]
-const mockFindId = [{
-      "id": 2,
-      "name": "Traje de encolhimento"
-    }]
+  describe('Tests find all products', function () {
 
-describe('Tests Models', function () {
-  it('Test find all products', async function () {
-    sinon.stub(connection, 'execute').resolves(mockProducts);
-    const newItem = await model.findAll();
+    it('Find all products', async function () {
+      sinon.stub(connection, 'execute').resolves(mockProducts);
+      const newItem = await modelProducts.findAll();
 
-    expect(newItem).to.equal(mockProducts);
-  });
-  it('Test find by id products', async function () {
-    sinon.stub(connection, 'execute').resolves([[mockProducts[0]]]);
-    const findId = await model.findById(1);
-
-    expect(findId).to.be.equal(mockProducts[0]);
-  });
+      expect(newItem).to.equal(mockProducts);
+    });
   
-  it('Test find by id products', async function () {
+  })
+
+  describe('Tests find id by products', function () {
+    it('Find by id products', async function () {
+      sinon.stub(connection, 'execute').resolves([[mockProducts[0]]]);
+      const findId = await modelProducts.findById(1);
+
+      expect(findId).to.be.equal(mockProducts[0]);
+    });
+
+  })
+
+  describe('Tests insert products successful and fail', function () {
+  
+    it('Test find by id products', async function () {
       sinon.stub(connection, 'execute').resolves([{ insertId: 2 }]);
-    const findId = await model.insert({ name: 'testName'}, 'products');
+      const findId = await modelProducts.insert({ name: 'testName'}, 'products');
 
-    expect(findId).to.be.equal(2); 
-  });
+      expect(findId).to.be.equal(2); 
+    });
   
-  it('Test find by id Sales', async function () {
-    sinon.stub(connection, 'execute').resolves([[mockFindSales]]);
-    const findId = await model.findBySaleId(1);
+  });
 
-    expect(findId).to.be.equal(mockFindSales); 
-  });
-  
-  
   afterEach(function () {
-     sinon.restore();
-   });
-});
+    sinon.restore();
+  });
+})

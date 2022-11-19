@@ -1,6 +1,6 @@
 const express = require('express');
 const { controllerPostSales, controllerGetSales, controllerGetSalesById,
-  contollerDeleteSales, controllerUpdateSales } = require('../controllers/products.controller');
+  contollerDeleteSales, controllerUpdateSales } = require('../controllers/sales.controller');
 const { validateQuantity, validateProductId } = require('../middlewares/validate');
 
 const router = express.Router();

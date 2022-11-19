@@ -36,7 +36,6 @@ const validatePutName = (req, res, next) => {
  
   if (error) {
     const typeError = error.details[0].type;
-    console.log(typeError);
     const messageError = typeError === 'string.min'
     ? '"name" length must be at least 5 characters long'
   : '"name" is required';
