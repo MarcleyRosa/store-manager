@@ -78,6 +78,27 @@ const responseMock = {
   ]
 }
 
+const mockGetAllSales = [
+   {
+    saleId: 1,
+    productId: 1,
+    quantity: 5,
+    date: '2022-11-19T21:16:15.000Z'
+  },
+   {
+    saleId: 1,
+    productId: 2,
+    quantity: 10,
+    date: '2022-11-19T21:16:15.000Z'
+  },
+   {
+    saleId: 2,
+    productId: 3,
+    quantity: 15,
+    date: '2022-11-19T21:16:15.000Z'
+  }
+]
+
 
 const mockAllsales = [
   { id: 1, date: '2022-11-17T23:37:46.000Z' },
@@ -96,4 +117,5 @@ module.exports = {
   setSalesIdDate,
   mockAllsales,
   responseMock,
+  mockGetAllSales,
 }

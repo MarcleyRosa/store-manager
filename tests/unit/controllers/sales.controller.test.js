@@ -5,7 +5,7 @@ const querys = require('../../../src/controllers/sales.controller');
 const sinonChai = require('sinon-chai');
 
 const serviceSales = require('../../../src/services/sales.services');
-const { mockProducts, mockAllProducts, mockUpdateSales, findsProducts, responseMock } = require('../mochs');
+const { mockProducts, mockAllProducts, mockUpdateSales, mockGetAllSales, responseMock } = require('../mochs');
 
 const express = require('express');
 chai.use(sinonChai)
@@ -18,8 +18,23 @@ use(chaiHttp);
 
 describe('Tests Sales layer Controller', function () {
   
-  describe('Tests insert Sales Sucessfull and not found', function () {
-     it('Tests endpoints insert sales ', async function () {
+  describe('Tests endpoint post Sales Sucessfull and not found', function () {
+    it('Tests endpoints post sales successful ', async function () {
+      const req = { body: mockAllProducts };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(serviceSales, 'insertSales').resolves({ type: null, message: 3 })
+
+      await querys.controllerPostSales(req, res);
+
+      expect(res.status).to.have.been.calledWith(201);
+
+    })
+
+    it('Tests endpoints insert sales not found ', async function () {
 
       const req = { body: mockAllProducts };
       const res = {};
@@ -27,26 +42,15 @@ describe('Tests Sales layer Controller', function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      sinon.stub(serviceSales, 'insertSales').resolves({ type: '404', message: 'Product not found' })
+      sinon.stub(serviceSales, 'insertSales').resolves({ type: '404', message: 'Prodauct not found' })
 
       await querys.controllerPostSales(req, res);
 
       expect(res.status).to.have.been.calledWith(404)
-     })
-    //  it('Tests endpoints insert sales not found ', async function () {
-
-    //   const req = { body: mockAllProducts };
-    //   const res = {};
-
-    //   res.status = sinon.stub().returns(res);
-    //   res.json = sinon.stub().returns();
-
-    //   sinon.stub(productsAll, 'insertSales').resolves({ type: null, message: 3 })
-
-    //   await querys.controllerPostSales(req, res);
-
-    //    expect(res.status).to.have.been.calledWith(201)
-    //  })
+    })
+     afterEach(function () {
+   sinon.restore();
+  });  
   })
 
   describe('Tests Sales product by id and not found', function () {
@@ -64,6 +68,9 @@ describe('Tests Sales layer Controller', function () {
 
       expect(res.status).to.have.been.calledWith(200)
     })
+     afterEach(function () {
+   sinon.restore();
+  });  
   })
 
   describe('Tests Delete Sales and not found', function () {
@@ -81,6 +88,9 @@ describe('Tests Sales layer Controller', function () {
       // expect(res.end).to.be.equal(undefined)
       expect(res.status).to.have.been.calledWith(204)
     })
+     afterEach(function () {
+   sinon.restore();
+  });  
   })
 
   describe('Tests Update Sucessfull and not found', function () {
@@ -97,10 +107,31 @@ describe('Tests Sales layer Controller', function () {
 
       expect(res.status).to.have.been.calledWith(200)
     })
+     afterEach(function () {
+   sinon.restore();
+  });  
   })
 
-  afterEach(function () {
-   sinon.restore();
-  });    
+  // describe('Tests Sales product by id and not found', function () {
+  //   it('Tests endpoints sales products by id ', async function () {
+
+  //     const req = { params: { id: 3 } };
+  //     const res = {};
+
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  
+  //     sinon.stub(serviceSales, 'getAllSales').resolves(mockGetAllSales);
+
+  //     await querys.controllerGetSales(req, res);
+
+  //     expect(res.status).to.have.been.calledWith(200);
+
+  //   })
+
+  //    afterEach(function () {
+  //  sinon.restore();
+  // });  
+  // })  
 
 })

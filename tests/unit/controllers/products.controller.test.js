@@ -1,7 +1,7 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const chaiHttp = require('chai-http');
-const querys = require('../../../src/controllers/products.controller');
+const controllerProducts = require('../../../src/controllers/products.controller');
 const sinonChai = require('sinon-chai');
 const serviceProducts = require('../../../src/services/products.services');
 const { mockProducts, mockAllProducts, mockUpdateSales, findsProducts } = require('../mochs');
@@ -32,7 +32,7 @@ describe('Tests Products Layer Controller', function () {
   
       sinon.stub(serviceProducts, 'getAllProducts').resolves(mockProducts)
 
-      await querys.routerAllProducts(req, res);
+      await controllerProducts.routerAllProducts(req, res);
 
       expect(res.status).to.have.been.calledWith(status)
       // expect(res.json).to.have.been.calledWith(mockProducts)
@@ -56,7 +56,7 @@ describe('Tests Products Layer Controller', function () {
   
       sinon.stub(serviceProducts, 'getProductsById').resolves(mockProducts[0]);
 
-      await querys.routerProductsById(req, res);
+      await controllerProducts.routerProductsById(req, res);
 
       expect(res.status).to.have.been.calledWith(200);
     });
@@ -78,7 +78,7 @@ describe('Tests Products Layer Controller', function () {
   
       sinon.stub(serviceProducts, 'insertProducts').resolves(mockProducts[0]);
 
-      await querys.routerPostProducts(req, res);
+      await controllerProducts.routerPostProducts(req, res);
 
       expect(res.status).to.have.been.calledWith(status);
     });
@@ -91,7 +91,7 @@ describe('Tests Products Layer Controller', function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      await querys.routerPostProducts(req, res);
+      await controllerProducts.routerPostProducts(req, res);
 
       expect(res.status).to.have.been.calledWith(400);
     });
@@ -104,29 +104,45 @@ describe('Tests Products Layer Controller', function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      await querys.routerProductsById(req, res);
+      await controllerProducts.routerProductsById(req, res);
 
       expect(res.status).to.have.been.calledWith(404)
     })
   })
   
-  describe('Tests Sales Products by id and not found', function () {
+  describe('Tests Sales Update Products and not found', function () {
     it('Tests endpoints sales products by id ', async function () {
 
       sinon.stub(serviceProducts, 'updateProducts').resolves(mockProducts[0]);
-      const req = { body: { name: 'nametest'}, params: { id: 2 } };
+      const req = { body: { name: 'nametest' }, params: { id: 2 } };
       const res = {};
 
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      await querys.controllerPutProductId(req, res);
+      await controllerProducts.controllerPutProductId(req, res);
 
       expect(res.status).to.have.been.calledWith(200)
     })
+
+    it('Tests endpoints update products not found ', async function () {
+
+      sinon.stub(serviceProducts, 'updateProducts').resolves({ type: '404', message: 'product not found'});
+      const req = { body: { name: '' }, params: { id: 2 } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await controllerProducts.controllerPutProductId(req, res);
+
+      expect(res.status).to.have.been.calledWith(404)
+    })
+    
   })
 
   describe('Tests delete product by id and not found', function () {
+
     it('endpoints delete products by id ', async function () {
 
       sinon.stub(serviceProducts, 'deleteProducts').resolves(2);
@@ -136,11 +152,28 @@ describe('Tests Products Layer Controller', function () {
       res.status = sinon.stub().returns(res);
       res.end = sinon.stub().returns();
 
-      await querys.contollerDeleteProduct(req, res);
+      await controllerProducts.contollerDeleteProduct(req, res);
 
       // expect(res.end).to.be.equal(undefined)
       expect(res.status).to.have.been.calledWith(204);
     })
+
+    it('endpoints delete products by id ', async function () {
+
+      sinon.stub(serviceProducts, 'deleteProducts').resolves({ type: '404', message: 'Product not found'});
+      const req = { params: { id: 2 } };
+      const res = {};
+
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+      res.json = sinon.stub().returns();
+
+      await controllerProducts.contollerDeleteProduct(req, res);
+
+      // expect(res.end).to.be.equal(undefined)
+      expect(res.status).to.have.been.calledWith(404);
+    })
+
   })
 
   describe('', function () {
@@ -153,7 +186,7 @@ describe('Tests Products Layer Controller', function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      await querys.controllerSearchProduct(req, res);
+      await controllerProducts.controllerSearchProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(200)
   })

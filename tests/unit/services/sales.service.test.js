@@ -1,22 +1,14 @@
 const chai = require('chai');
 const sinon = require('sinon');
 
-const chaiHttp = require('chai-http');
-const sinonChai = require('sinon-chai');
-
+const modelProducts = require('../../../src/models/products.model')
 const modelSales = require('../../../src/models/sales.model');
 const serviceSales = require('../../../src/services/sales.services');
 
-const { mockProducts, mockAllProducts, mockFindIdSales, findsProducts, mockFindSales,
-  setSalesIdDate, mockAllsales } = require('../mochs');
+const { mockAllProducts, mockFindIdSales, mockFindSales,
+  setSalesIdDate, mockProducts, mockAllsales } = require('../mochs');
 
-
-const express = require('express');
-chai.use(sinonChai)
-
-const app = express();
-
-const { expect, use } = chai;
+const { expect } = chai;
 
 const mckBodyProducts = [ { productId: 1, quantity: 1 }, { productId: 2, quantity: 5 } ]
 
@@ -24,6 +16,7 @@ const mckBodyProducts = [ { productId: 1, quantity: 1 }, { productId: 2, quantit
 describe('Test Sales Layer Services', function () {
 
   describe('Tests get sales by id and not found', function () {
+
     it('getSalesById sucessful', async function () {
       sinon.stub(modelSales, 'findIdSales').resolves([setSalesIdDate]);
 
@@ -33,15 +26,18 @@ describe('Test Sales Layer Services', function () {
     })
 
     it('Tests getSalesById not found', async function () {
+
       sinon.stub(modelSales, 'findIdSales').resolves([{ type: '404', message: ''}]);
 
       const findById = await serviceSales.getSalesById(10);
 
       expect(findById).to.be.deep.equal({ type: '404', message: 'Sale not found'});
     })
+
   })
   
   describe('Tests Update Sales Products Successful and not found ', function () {
+
     it('Update Sales Products Successful', async function () {
       sinon.stub(modelSales, 'findBySaleId').resolves(mockFindSales);
 
@@ -53,6 +49,7 @@ describe('Test Sales Layer Services', function () {
   })
 
   describe('Tests Delete Sales', function () {
+
     it('Delete Sales', async function () {
       sinon.stub(modelSales, 'findBySaleId').resolves(mockFindSales);
 
@@ -60,18 +57,23 @@ describe('Test Sales Layer Services', function () {
 
       expect(setUpdate).to.be.deep.equal({ type: null, message: 'Update Sucessful' });
     })
+
   })
 
-    // it('Test Insert Sales Sucessfull', async function () {
-  //   sinon.stub(modelSales, 'findAll').resolves(mockProducts);
-  //   sinon.stub(modelSales, 'findAll').resolves(mockAllsales);
-  //   sinon.stub(modelSales, 'insert').resolves({ insertId: 3 });
-  //   sinon.stub(modelSales, 'insertSalesProducts').resolves([{ affectedRows: 1 }]);
+  // describe('Tests insert sales products and not found', function () {
+ 
+  //   it('Insert Sales Sucessfull', async function () {
+  //     sinon.stub(modelProducts, 'findAll').resolves(mockProducts);
+  //     sinon.stub(modelProducts, 'findAll').resolves(mockAllsales);
+  //     sinon.stub(modelProducts, 'insert').resolves({ insertId: 3 });
+  //     sinon.stub(modelSales, 'insertSalesProducts').resolves([{ insertId: 0 }]);
 
-  //   await serviceSales.insertSales(mockAllProducts)
+  //     await serviceSales.insertSales([mockAllProducts])
 
 
-  //   expect(2).to.be.equal(404)
+  //     expect(2).to.be.equal(404)
+  //   })
+
   // })
   
   afterEach(function () {
