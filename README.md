@@ -160,28 +160,3 @@ O banco terá três tabelas:
 ```
 
   <br />
-</details>
-
-<details id="para-escrever-seus-próprios-arquivos-de-teste">
-  <summary><strong>🔬 Escrevendo testes de unidade</strong></summary><br />
-
-```tree
-.
-├─ ...
-├─ src
-├─ tests
-│   └─ unit
-|       ├─ controllers
-│           ├─ productsControllers.test.js
-│           └─ salesControllers.test.js
-|       ├─ services
-│           ├─ productsServices.test.js
-│           └─ salesServices.test.js
-|       └─ models
-│           ├─ productsModels.test.js
-│           └─ salesModels.test.js
-└─ ...
-```
-  <br />
-
-</details>
