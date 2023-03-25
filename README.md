@@ -95,7 +95,7 @@ Para este projeto você pode rodar os testes das seguintes maneiras.
   - Enviar vendas para o sistema e essas vendas devem validar se o produto em questão existe;
   - Ler, deletar e atualizar vendas.
 
-- Para **todos os endpoints** garanta que:
+- Para **todos os endpoints**:
 
   - Caso o recurso **não seja encontrado**, **aconteça um erro** ou **haja dados inválidos** na requisição, a API retorna o status HTTP adequado com o body `{ message: <mensagem de erro> }`;
   - Todos os endpoints sempre retornam uma resposta, havendo sucesso nas operações ou não;
