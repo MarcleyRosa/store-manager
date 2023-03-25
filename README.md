@@ -7,7 +7,7 @@ API utilizando a arquitetura MSC (model-service-controller)!
 # Orientações
 
 <details>
-  <summary><strong>🐳 Rodando no Docker vs Localmente</strong></summary>
+  <summary><strong> Rodando no Docker vs Localmente</strong></summary>
 
 ### Com Docker
 
@@ -29,7 +29,7 @@ API utilizando a arquitetura MSC (model-service-controller)!
 
  <br />
 
-### 👉 Sem Docker
+### Sem Docker
 
 > :information_source: Instale as dependências com `npm install`
 
@@ -59,7 +59,7 @@ API utilizando a arquitetura MSC (model-service-controller)!
 </details>
 
 <details>
-  <summary><strong>🛠 Execução de testes localmente</strong></summary>
+  <summary><strong> Execução de testes localmente</strong></summary>
 
 > :information_source: IMPORTANTE
 
@@ -74,7 +74,7 @@ Para este projeto você pode rodar os testes das seguintes maneiras.
 </details>
 
 <details>
-  <summary id="informacao-importante"><strong>⚠️ Informações importantes sobre o projeto</strong></summary>
+  <summary id="informacao-importante"><strong> Informações importantes sobre o projeto</strong></summary>
 
 - Pode ser utilizado para:
 
@@ -98,7 +98,7 @@ Para este projeto você pode rodar os testes das seguintes maneiras.
   </details>
 
 <details>
-  <summary id="diagrama-scripts"><strong>🎲 Diagrama ER, Entidades e Scripts</strong></summary>
+  <summary id="diagrama-scripts"><strong> Diagrama ER, Entidades e Scripts</strong></summary>
 
 #### Diagrama de Entidade-Relacionamento
 
