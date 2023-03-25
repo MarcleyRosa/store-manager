@@ -41,7 +41,7 @@ API utilizando a arquitetura MSC (model-service-controller)!
 </details>
 
 <details>
-  <summary><strong>‼️ Antes de começar </strong></summary>
+  <summary><strong> Antes de começar </strong></summary>
 
 1. Clone o repositório
 
